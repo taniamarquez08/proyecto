@@ -61,4 +61,3 @@ package Historial;
          SwingUtilities.invokeLater(() -> new Login().setVisible(true));
      }
  }
-
