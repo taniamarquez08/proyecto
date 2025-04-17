@@ -21,7 +21,7 @@ public class Usuario {
     private AppointmentBase MisCitas; 
     private AppointmentBase PublicAppointmentBase;
 
-    public Usuario(String nombre, String apellido, String email, String password, String telefono, String direccion, String ciudad, String estado, String codigoPostal, String pais, String RegistroCitasGlobal) {
+    public Usuario(String nombre, String apellido, String email, String password, String telefono, String direccion, String ciudad, String estado, String codigoPostal, String pais, AppointmentBase RegistroCitasGlobal) {
         
         this.nombre = nombre;
         this.apellido = apellido;
@@ -38,12 +38,6 @@ public class Usuario {
         PublicAppointmentBase = RegistroCitasGlobal;
 
         IsDoctor = false;
-    }
-
-    public Usuario(String nombre2, String apellido2, String email2, String password2, String telefono2,
-            String direccion2, String ciudad2, String estado2, String codigoPostal2, String pais2,
-            AppointmentBase appointmentBase) {
-        //TODO Auto-generated constructor stub
     }
 
     public void CrearCita(String Motivo, DateTime Inicio){
