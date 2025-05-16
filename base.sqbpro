@@ -1,24 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="base.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4029"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="base" custom_title="0" dock_id="1" table="4,4:mainbase"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011700ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE base (
-    nombre_doctor TEXT NOT NULL,
-    apellido_doctor TEXT NOT NULL,
-    correo_doctor TEXT NOT NULL,
-    contrasena_doctor TEXT NOT NULL,
-    telefono_doctor TEXT NOT NULL,
-    direccion_doctor TEXT NOT NULL,
-    ciudad_doctor TEXT NOT NULL,
-    estado_doctor TEXT NOT NULL,
-    cp_doctor TEXT NOT NULL,
-    pais_doctor TEXT NOT NULL,
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="base.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="6050"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="base" custom_title="0" dock_id="1" table="4,4:mainbase"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011700ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">
+BEGIN TRANSACTION;
 
-    nombre_paciente TEXT NOT NULL,
-    apellido_paciente TEXT NOT NULL,
-    correo_paciente TEXT NOT NULL,
-    contrasena_paciente TEXT NOT NULL,
-    telefono_paciente TEXT NOT NULL,
-    direccion_paciente TEXT NOT NULL,
-    ciudad_paciente TEXT NOT NULL,
-    estado_paciente TEXT NOT NULL,
-    cp_paciente TEXT NOT NULL,
-    pais_paciente TEXT NOT NULL
+-- 1) Renombramos la tabla actual
+ALTER TABLE base RENAME TO old_base;
+
+-- 2) Creamos de nuevo la tabla con todo lo que falta
+CREATE TABLE base (
+  id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  -- Datos del doctor
+  nombre_doctor        TEXT    NOT NULL,
+  apellido_doctor      TEXT    NOT NULL,
+  correo_doctor        TEXT    NOT NULL,
+  contrasena_doctor    TEXT    NOT NULL,
+  telefono_doctor      TEXT    NOT NULL,
+  direccion_doctor     TEXT    NOT NULL,
+  ciudad_doctor        TEXT    NOT NULL,
+  estado_doctor        TEXT    NOT NULL,
+  cp_doctor            TEXT    NOT NULL,
+  pais_doctor          TEXT    NOT NULL,
+
+  -- Datos del paciente
+  nombre_paciente      TEXT    NOT NULL,
+  apellido_paciente    TEXT    NOT NULL,
+  correo_paciente      TEXT    NOT NULL,
+  contrasena_paciente  TEXT    NOT NULL,
+  telefono_paciente    TEXT    NOT NULL,
+  direccion_paciente   TEXT    NOT NULL,
+  ciudad_paciente      TEXT    NOT NULL,
+  estado_paciente      TEXT    NOT NULL,
+  cp_paciente          TEXT    NOT NULL,
+  pais_paciente        TEXT    NOT NULL,
+
+  -- Identificadores de la consulta
+  expediente_num       TEXT    NOT NULL DEFAULT '',
+  fecha_consulta       TEXT    NOT NULL DEFAULT '',
+
+  -- Campos de la consulta / expediente
+  sintomas             TEXT    NOT NULL DEFAULT '',
+  diagnostico          TEXT    NOT NULL DEFAULT '',
+  estudios             TEXT    NOT NULL DEFAULT '',
+  receta_medicamento   TEXT    NOT NULL DEFAULT '',
+  receta_dias          INTEGER NOT NULL DEFAULT 0,
+  receta_frecuencia    TEXT    NOT NULL DEFAULT '',
+
+  -- Firma y referencia al doctor que crea la consulta
+  firma_doctor         TEXT    NOT NULL DEFAULT '180551',
+  id_doctor            TEXT    NOT NULL DEFAULT ''
 );
+
+-- 3) Copiamos los datos antiguos (dejando vacíos los nuevos campos)
+INSERT INTO base (
+  nombre_doctor, apellido_doctor, correo_doctor, contrasena_doctor,
+  telefono_doctor, direccion_doctor, ciudad_doctor, estado_doctor,
+  cp_doctor, pais_doctor,
+  nombre_paciente, apellido_paciente, correo_paciente, contrasena_paciente,
+  telefono_paciente, direccion_paciente, ciudad_paciente, estado_paciente,
+  cp_paciente, pais_paciente,
+  sintomas, diagnostico, estudios,
+  receta_medicamento, receta_dias, receta_frecuencia,
+  firma_doctor, id_doctor
+)
+SELECT
+  nombre_doctor, apellido_doctor, correo_doctor, contrasena_doctor,
+  telefono_doctor, direccion_doctor, ciudad_doctor, estado_doctor,
+  cp_doctor, pais_doctor,
+  nombre_paciente, apellido_paciente, correo_paciente, contrasena_paciente,
+  telefono_paciente, direccion_paciente, ciudad_paciente, estado_paciente,
+  cp_paciente, pais_paciente,
+  sintomas, diagnostico, estudios,
+  receta_medicamento, receta_dias, receta_frecuencia,
+  firma_doctor, id_doctor
+FROM old_base;
+
+-- 4) Borramos la tabla antigua y cerramos
+DROP TABLE old_base;
+
+COMMIT;
+PRAGMA foreign_keys = ON;
+
 </sql><current_tab id="0"/></tab_sql></sqlb_project>

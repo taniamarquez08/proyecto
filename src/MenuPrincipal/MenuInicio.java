@@ -97,7 +97,6 @@ public class MenuInicio {
                 // Crear instancias de UserBase y AppointmentBase
                 UserBase ub = new UserBase();
                 AppointmentBase ab = new AppointmentBase();
-                frame.dispose(); // CIERRA MenuInicio
                 // Abrir SignInterface con null para el MainMenu (si no lo necesitas)
                 new SignInterface(ub, ab, null);
             }

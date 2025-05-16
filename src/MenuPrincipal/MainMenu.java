@@ -1,7 +1,7 @@
 package MenuPrincipal;
 
 import Emergencias.Emergency;
-import Expediente.AppGUI;
+import Expediente.ExpedienteNuevo;  // <-- Importamos la clase modificada
 import Historial.InterfazPaciente;
 import RegistroCitas.AppointmentBase;
 import RegistroCitas.AppointmentInterface;
@@ -36,19 +36,17 @@ public class MainMenu {
 
         JFrame frame = new JFrame("MedConnect");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                // Al pulsar la “X” sobre MainMenu, vuelve al MenuInicio con el mismo Usuario
-                new MenuInicio(MainMenu.this.Usuario);
-            }
-        });
-        
         frame.setSize(400, 500);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
+
+        // Cuando cierres MainMenu con la X, vuelves a MenuInicio(Persistiendo Usuario)
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new MenuInicio(MainMenu.this.Usuario);
+            }
+        });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -62,14 +60,14 @@ public class MainMenu {
         JButton botonJustificantes = createButton("Justificante Médico");
         JButton botonCancelarCita  = createButton("Cancelar Cita");
 
-        
         botonEmergencias.addActionListener(e -> new Emergency().setVisible(true));
-        // botonCitas.addActionListener(e -> new PatientInterface(this.Usuario, new AppointmentInterface(Usuario)));
-         botonHistorial.addActionListener(e -> new InterfazPaciente());
-         botonExpediente.addActionListener(e -> new AppGUI(null));
-        // botonTratamiento.addActionListener(e -> new SeguimientoTratamiento());
-        // botonJustificantes.addActionListener(e -> new HistorialJustificante().setVisible(true));
-        // botonCancelarCita.addActionListener(e -> new AppointmentInterface(Usuario));
+        // botonCitas...
+        botonHistorial  .addActionListener(e -> new InterfazPaciente());
+        // **Aquí** llamamos al constructor que recibe el doctor que está logueado:
+        botonExpediente.addActionListener(e -> new ExpedienteNuevo(this.Usuario));
+        // botonTratamiento...
+        // botonJustificantes...
+        // botonCancelarCita...
 
         buttonPanel.add(botonEmergencias);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -89,17 +87,6 @@ public class MainMenu {
         centerWrapper.add(buttonPanel);
 
         frame.add(centerWrapper, BorderLayout.CENTER);
-
-        // tras frame.setDefaultCloseOperation(...)
-final JFrame f = frame;
-frame.addWindowListener(new java.awt.event.WindowAdapter() {
-    @Override
-    public void windowClosing(java.awt.event.WindowEvent e) {
-        f.dispose();  // CIERRA MainMenu
-        new MenuInicio(MainMenu.this.Usuario);  // ABRE MenuInicio
-    }
-});
-
         frame.setVisible(true);
     }
 
@@ -110,4 +97,3 @@ frame.addWindowListener(new java.awt.event.WindowAdapter() {
         return btn;
     }
 }
-
