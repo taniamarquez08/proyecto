@@ -3,10 +3,11 @@ package RegistroCitas;
 import MenuPrincipal.*;
 import User.UserBase;
 import User.Usuario;
-import java.awt.*;
-import javax.swing.*;
-import java.sql.*;
 import Utilidades.ConexionSQLite;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.*;
 
 public class SignInterface {
     private JFrame frame;
@@ -17,12 +18,14 @@ public class SignInterface {
     private AppointmentBase registroCitasGlobal;
     private MainMenu MenuPrincipal;
 
+    public static String correoActivo = null; // GUARDAR EL CORREO PARA USO GLOBAL
+
     public SignInterface(UserBase userBase, AppointmentBase registroCitasGlobal, MainMenu MPrincipal) {
         MenuPrincipal = MPrincipal;
         this.userBase = userBase;
         this.registroCitasGlobal = registroCitasGlobal;
-        frame = new JFrame("Inicio de Sesión");
 
+        frame = new JFrame("Inicio de Sesión");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 200);
         frame.setLayout(new GridLayout(4, 2));
@@ -48,6 +51,15 @@ public class SignInterface {
         recoverPasswordButton.addActionListener(e -> openRecoveryWindow());
 
         frame.setVisible(true);
+
+        // Si el usuario cierra la ventana de inicio de sesión, se regresa al MenuInicio
+frame.addWindowListener(new java.awt.event.WindowAdapter() {
+    @Override
+    public void windowClosing(java.awt.event.WindowEvent e) {
+        new MenuInicio(null);
+    }
+});
+
     }
 
     private void login() {
@@ -73,62 +85,68 @@ public class SignInterface {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String correoPaciente = rs.getString("correo_paciente");
-                String correoDoctor = rs.getString("correo_doctor");
-                String contrasenaPaciente = rs.getString("contrasena_paciente");
-                String contrasenaDoctor = rs.getString("contrasena_doctor");
-
-                boolean esDoctor = correoDoctor != null && correoDoctor.equals(email);
-                boolean contrasenaCorrecta = (esDoctor && password.equals(contrasenaDoctor)) ||
-                                             (!esDoctor && password.equals(contrasenaPaciente));
+                boolean esDoctor = email.equals(rs.getString("correo_doctor"));
+                boolean contrasenaCorrecta = (esDoctor && password.equals(rs.getString("contrasena_doctor"))) ||
+                                             (!esDoctor && password.equals(rs.getString("contrasena_paciente")));
 
                 if (contrasenaCorrecta) {
-                    String nombre = rs.getString("nombre");
-                    String apellido = rs.getString("apellido");
-                    String telefono = rs.getString("telefono");
-                    String direccion = rs.getString("direccion");
-                    String ciudad = rs.getString("ciudad");
-                    String estado = rs.getString("estado");
-                    String cp = rs.getString("cp");
-                    String pais = rs.getString("pais");
+                    Usuario usuario;
+                    if (esDoctor) {
+                        usuario = new Usuario(
+                            rs.getString("nombre_doctor"),
+                            rs.getString("apellido_doctor"),
+                            email,
+                            password,
+                            rs.getString("telefono_doctor"),
+                            rs.getString("direccion_doctor"),
+                            rs.getString("ciudad_doctor"),
+                            rs.getString("estado_doctor"),
+                            rs.getString("cp_doctor"),
+                            rs.getString("pais_doctor"),
+                            registroCitasGlobal
+                        );
+                        usuario.setDoctor();
+                    } else {
+                        usuario = new Usuario(
+                            rs.getString("nombre_paciente"),
+                            rs.getString("apellido_paciente"),
+                            email,
+                            password,
+                            rs.getString("telefono_paciente"),
+                            rs.getString("direccion_paciente"),
+                            rs.getString("ciudad_paciente"),
+                            rs.getString("estado_paciente"),
+                            rs.getString("cp_paciente"),
+                            rs.getString("pais_paciente"),
+                            registroCitasGlobal
+                        );
+                    }
 
-                    Usuario usuario = new Usuario(
-                        nombre, apellido, email, password,
-                        telefono, direccion, ciudad, estado, cp, pais,
-                        registroCitasGlobal
+                    correoActivo = email; // GUARDAR CORREO PARA USO GLOBAL
+
+                    JOptionPane option = new JOptionPane(
+                        esDoctor ? "Inicio de sesión exitoso como doctor." : "Inicio de sesión exitoso como paciente.",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        JOptionPane.DEFAULT_OPTION
                     );
 
+                    JDialog dialog = option.createDialog("Éxito");
+                    dialog.setModal(true);
+                    dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                    dialog.setVisible(true); // Muestra y espera cierre
+
+                    frame.dispose(); // Cerrar login después del mensaje
+
+                    // Abrir el menú correspondiente
                     if (esDoctor) {
-                        usuario.setDoctor();
-                        frame.dispose();
-                        JOptionPane option = new JOptionPane(
-                            "Inicio de sesión exitoso como doctor.",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            JOptionPane.DEFAULT_OPTION
-                        );
-                        JDialog dialog = option.createDialog("Éxito");
-                        dialog.setModal(true);
-                        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                        dialog.setVisible(true);
                         new DoctorMenuInterface();
                     } else {
-                        frame.dispose();
-                        JOptionPane option = new JOptionPane(
-                            "Inicio de sesión exitoso como paciente.",
-                            JOptionPane.INFORMATION_MESSAGE,
-                            JOptionPane.DEFAULT_OPTION
-                        );
-                        JDialog dialog = option.createDialog("Éxito");
-                        dialog.setModal(true);
-                        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-                        dialog.setVisible(true);
                         new MainMenu(usuario);
                     }
 
                 } else {
                     JOptionPane.showMessageDialog(frame, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-
             } else {
                 JOptionPane.showMessageDialog(frame, "Credenciales incorrectas.", "Error", JOptionPane.ERROR_MESSAGE);
             }

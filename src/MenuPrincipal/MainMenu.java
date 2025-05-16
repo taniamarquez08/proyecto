@@ -36,6 +36,16 @@ public class MainMenu {
 
         JFrame frame = new JFrame("MedConnect");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                // Al pulsar la “X” sobre MainMenu, vuelve al MenuInicio con el mismo Usuario
+                new MenuInicio(MainMenu.this.Usuario);
+            }
+        });
+        
         frame.setSize(400, 500);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
@@ -79,6 +89,17 @@ public class MainMenu {
         centerWrapper.add(buttonPanel);
 
         frame.add(centerWrapper, BorderLayout.CENTER);
+
+        // tras frame.setDefaultCloseOperation(...)
+final JFrame f = frame;
+frame.addWindowListener(new java.awt.event.WindowAdapter() {
+    @Override
+    public void windowClosing(java.awt.event.WindowEvent e) {
+        f.dispose();  // CIERRA MainMenu
+        new MenuInicio(MainMenu.this.Usuario);  // ABRE MenuInicio
+    }
+});
+
         frame.setVisible(true);
     }
 

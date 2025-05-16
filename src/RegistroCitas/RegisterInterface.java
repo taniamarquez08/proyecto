@@ -1,10 +1,11 @@
 package RegistroCitas;
+
 import User.UserBase;
 import User.Usuario;
 import java.awt.*;
 import javax.swing.*;
-import java.sql.*; // NUEVO BLOQUE
-import Utilidades.ConexionSQLite; // NUEVO BLOQUE
+import java.sql.*;
+import Utilidades.ConexionSQLite;
 
 public class RegisterInterface {
     private JFrame frame;
@@ -70,14 +71,17 @@ public class RegisterInterface {
         registerButton = new JButton("Registrar");
         frame.add(registerButton);
 
-        registerButton.addActionListener(e -> registerUser()); // LÍNEA MODIFICADA para leer los datos
+        registerButton.addActionListener(e -> registerUser());
 
         frame.setVisible(true);
     }
 
     private void registerUser() {
-        JTextField[] fields = {nombreField, apellidoField, emailField, telefonoField, direccionField, ciudadField, estadoField, codigoPostalField, paisField};
-        String password = new String(passwordField.getPassword());
+        JTextField[] fields = {
+            nombreField, apellidoField, emailField, telefonoField,
+            direccionField, ciudadField, estadoField, codigoPostalField, paisField
+        };
+        String password = new String(passwordField.getPassword()).trim();
         boolean allFilled = true;
 
         for (JTextField field : fields) {
@@ -86,8 +90,8 @@ public class RegisterInterface {
                 break;
             }
         }
-        
-        if (password.trim().isEmpty()) {
+
+        if (password.isEmpty()) {
             allFilled = false;
         }
 
@@ -95,65 +99,60 @@ public class RegisterInterface {
             JOptionPane.showMessageDialog(frame, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-          // NUEVO BLOQUE: GUARDAR EN LA BASE DE DATOS
-          try (Connection conn = ConexionSQLite.conectar()) {
+
+        try (Connection conn = ConexionSQLite.conectar()) {
             if (conn == null) {
                 JOptionPane.showMessageDialog(frame, "No se pudo conectar con la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String sql = "INSERT INTO base (nombre, apellido, correo_paciente, correo_doctor, contrasena_paciente, contrasena_doctor, telefono, direccion, ciudad, estado, cp, pais) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            boolean esDoctor = doctorCheckBox.isSelected();
+
+            String sql;
+            if (esDoctor) {
+                sql = "INSERT INTO base (" +
+                        "nombre_doctor, apellido_doctor, correo_doctor, contrasena_doctor, telefono_doctor, direccion_doctor, ciudad_doctor, estado_doctor, cp_doctor, pais_doctor, " +
+                        "nombre_paciente, apellido_paciente, correo_paciente, contrasena_paciente, telefono_paciente, direccion_paciente, ciudad_paciente, estado_paciente, cp_paciente, pais_paciente" +
+                        ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')";
+            } else {
+                sql = "INSERT INTO base (" +
+                        "nombre_doctor, apellido_doctor, correo_doctor, contrasena_doctor, telefono_doctor, direccion_doctor, ciudad_doctor, estado_doctor, cp_doctor, pais_doctor, " +
+                        "nombre_paciente, apellido_paciente, correo_paciente, contrasena_paciente, telefono_paciente, direccion_paciente, ciudad_paciente, estado_paciente, cp_paciente, pais_paciente" +
+                        ") VALUES ('', '', '', '', '', '', '', '', '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            }
+
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            boolean esDoctor = doctorCheckBox.isSelected(); // NUEVO BLOQUE
-            stmt.setString(1, nombreField.getText()); // NUEVO BLOQUE
-            stmt.setString(2, apellidoField.getText()); // NUEVO BLOQUE
-
             if (esDoctor) {
-                stmt.setString(3, ""); // correo_paciente
-                stmt.setString(4, emailField.getText()); // correo_doctor
-                stmt.setString(5, ""); // contrasena_paciente
-                stmt.setString(6, password); // contrasena_doctor
+                stmt.setString(1, nombreField.getText());
+                stmt.setString(2, apellidoField.getText());
+                stmt.setString(3, emailField.getText());
+                stmt.setString(4, password);
+                stmt.setString(5, telefonoField.getText());
+                stmt.setString(6, direccionField.getText());
+                stmt.setString(7, ciudadField.getText());
+                stmt.setString(8, estadoField.getText());
+                stmt.setString(9, codigoPostalField.getText());
+                stmt.setString(10, paisField.getText());
             } else {
-                stmt.setString(3, emailField.getText()); // correo_paciente
-                stmt.setString(4, ""); // correo_doctor
-                stmt.setString(5, password); // contrasena_paciente
-                stmt.setString(6, ""); // contrasena_doctor
+                stmt.setString(1, nombreField.getText());
+                stmt.setString(2, apellidoField.getText());
+                stmt.setString(3, emailField.getText());
+                stmt.setString(4, password);
+                stmt.setString(5, telefonoField.getText());
+                stmt.setString(6, direccionField.getText());
+                stmt.setString(7, ciudadField.getText());
+                stmt.setString(8, estadoField.getText());
+                stmt.setString(9, codigoPostalField.getText());
+                stmt.setString(10, paisField.getText());
             }
-            
 
-            stmt.setString(7, telefonoField.getText());
-            stmt.setString(8, direccionField.getText());
-            stmt.setString(9, ciudadField.getText());
-            stmt.setString(10, estadoField.getText());
-            stmt.setString(11, codigoPostalField.getText());
-            stmt.setString(12, paisField.getText());
-
-
-
-            stmt.executeUpdate(); // NUEVO BLOQUE
-            JOptionPane.showMessageDialog(frame, "Usuario registrado exitosamente en la base de datos."); // NUEVO BLOQUE
-            frame.dispose(); // NUEVO BLOQUE
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(frame, "Usuario registrado exitosamente en la base de datos.");
+            frame.dispose();
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(frame, "Error al guardar usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); // NUEVO BLOQUE
+            JOptionPane.showMessageDialog(frame, "Error al guardar usuario: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        // fin de los nuevos bloques 
-
-        //esto creo que ya no se usa 
-      //  Usuario newUser = new Usuario(
-        //    nombreField.getText(), apellidoField.getText(), emailField.getText(),
-          //  password, telefonoField.getText(), direccionField.getText(),
-            //ciudadField.getText(), estadoField.getText(), codigoPostalField.getText(),
-            //paisField.getText(), registroCitasGlobal
-     //   );
-
-       // if (doctorCheckBox.isSelected()) {
-         //   newUser.setDoctor();
-        //}
-
-       // userBase.addUser(newUser);
-        //JOptionPane.showMessageDialog(frame, "Usuario registrado exitosamente");
-       // frame.dispose();
     }
 }

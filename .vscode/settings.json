@@ -8,6 +8,7 @@
         "mainClass": "RegistroCitas.RegisterInterface",
         "vmArgs": "-cp \"lib/sqlite-jdbc-3.49.1.0.jar;src\""
       }
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
   }
   

@@ -1,14 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="base.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2098"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="base" custom_title="0" dock_id="1" table="4,4:mainbase"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011700ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE base (
-    nombre TEXT NOT NULL,
-    apellido TEXT NOT NULL,
-    correo_paciente TEXT NOT NULL,
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="base.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="4029"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="base" custom_title="0" dock_id="1" table="4,4:mainbase"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011700ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE base (
+    nombre_doctor TEXT NOT NULL,
+    apellido_doctor TEXT NOT NULL,
     correo_doctor TEXT NOT NULL,
-    contrasena_paciente TEXT NOT NULL,
     contrasena_doctor TEXT NOT NULL,
-    telefono TEXT NOT NULL,
-    direccion TEXT NOT NULL,
-    ciudad TEXT NOT NULL,
-    estado TEXT NOT NULL,
-    cp TEXT NOT NULL,
-    pais TEXT NOT NULL
-);</sql><current_tab id="0"/></tab_sql></sqlb_project>
+    telefono_doctor TEXT NOT NULL,
+    direccion_doctor TEXT NOT NULL,
+    ciudad_doctor TEXT NOT NULL,
+    estado_doctor TEXT NOT NULL,
+    cp_doctor TEXT NOT NULL,
+    pais_doctor TEXT NOT NULL,
+
+    nombre_paciente TEXT NOT NULL,
+    apellido_paciente TEXT NOT NULL,
+    correo_paciente TEXT NOT NULL,
+    contrasena_paciente TEXT NOT NULL,
+    telefono_paciente TEXT NOT NULL,
+    direccion_paciente TEXT NOT NULL,
+    ciudad_paciente TEXT NOT NULL,
+    estado_paciente TEXT NOT NULL,
+    cp_paciente TEXT NOT NULL,
+    pais_paciente TEXT NOT NULL
+);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
