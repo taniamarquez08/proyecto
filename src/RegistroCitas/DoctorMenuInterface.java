@@ -1,7 +1,6 @@
 package RegistroCitas;
 
-import Expediente.AppGUI;
-import Expediente.SistemaExpediente;
+import Expediente.ExpedienteNuevo;      // IMPORT NUEVO
 import User.Usuario;
 import Emergencias.Emergency;
 import javax.swing.*;
@@ -24,19 +23,36 @@ public class DoctorMenuInterface {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Crear botones
-        btnProgramarCita    = createButton("Programar Cita");
-        btnVerExpediente    = createButton("Ver Expediente Médico");
-        btnRegistrarConsulta= createButton("Registrar Consulta");
-        btnHistorialPrevio  = createButton("Historial Previo");
-        btnVerSeguimiento   = createButton("Ver Seguimiento de Tratamiento");
+        btnProgramarCita     = createButton("Programar Cita");
+        btnVerExpediente     = createButton("Ver Expediente Médico");
+        btnRegistrarConsulta = createButton("Registrar Consulta");
+        btnHistorialPrevio   = createButton("Historial Previo");
+        btnVerSeguimiento    = createButton("Ver Seguimiento de Tratamiento");
 
-        // Agregar ActionListeners después de crear cada botón
-        btnProgramarCita.addActionListener(e -> new DoctorInterface(new Usuario("", "", "", "", "", "", "", "", "", "", new AppointmentBase())));
-        btnRegistrarConsulta.addActionListener(e -> new AppGUI(new SistemaExpediente()));
-        // Los demás botones los puedes activar igual cuando tengas sus interfaces
-        // btnVerExpediente.addActionListener(e -> new VerExpedienteInterface().setVisible(true));
-        // btnHistorialPrevio.addActionListener(e -> new HistorialPrevioInterface().setVisible(true));
-        // btnVerSeguimiento.addActionListener(e -> new SeguimientoTratamientoInterface().setVisible(true));
+        // ActionListener para Programar Cita (ejemplo)
+        btnProgramarCita.addActionListener(e -> 
+            new DoctorInterface(new Usuario("", "", "", "", "", "", "", "", "", "", new AppointmentBase()))
+        );
+
+        // ActionListener para Ver Expediente (desactivado hasta implementar)
+/*      btnVerExpediente.addActionListener(e ->
+            new VerExpedienteInterface().setVisible(true)
+        );
+*/
+
+        // ActionListener modificado: al pulsar "Registrar Consulta" abre ExpedienteNuevo
+        btnRegistrarConsulta.addActionListener(e -> {
+            new ExpedienteNuevo().setVisible(true);  // ABRE ExpedienteNuevo
+        });
+
+        // Los demás botones quedan a la espera de sus interfaces
+/*      btnHistorialPrevio.addActionListener(e ->
+            new HistorialPrevioInterface().setVisible(true)
+        );
+        btnVerSeguimiento.addActionListener(e ->
+            new SeguimientoTratamientoInterface().setVisible(true)
+        );
+*/
 
         // Apilar botones con espacio
         buttonPanel.add(btnProgramarCita);

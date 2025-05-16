@@ -62,11 +62,11 @@ public class MainMenu {
         JButton botonJustificantes = createButton("Justificante Médico");
         JButton botonCancelarCita  = createButton("Cancelar Cita");
 
-        // ActionListeners desactivados temporalmente
+        
         botonEmergencias.addActionListener(e -> new Emergency().setVisible(true));
         // botonCitas.addActionListener(e -> new PatientInterface(this.Usuario, new AppointmentInterface(Usuario)));
-        // botonHistorial.addActionListener(e -> new InterfazPaciente());
-        // botonExpediente.addActionListener(e -> new AppGUI(null));
+         botonHistorial.addActionListener(e -> new InterfazPaciente());
+         botonExpediente.addActionListener(e -> new AppGUI(null));
         // botonTratamiento.addActionListener(e -> new SeguimientoTratamiento());
         // botonJustificantes.addActionListener(e -> new HistorialJustificante().setVisible(true));
         // botonCancelarCita.addActionListener(e -> new AppointmentInterface(Usuario));
