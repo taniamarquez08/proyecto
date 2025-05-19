@@ -1,4 +1,4 @@
-//package Expediente;       QUITAR EL COMENTARIO
+//package Expediente;       QUITAR EL COMENTARIO -- Quitalo tu xd?
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class AppGUI {
 
     public AppGUI(SistemaExpediente sistema) {
         this.sistema = sistema;
-        // Llamamos a la ventana de autenticación para el doctor
+        // Llamamos a la ventana de autenticación para el doctor -- Quienes llaman jaja?
         mostrarVentanaAutenticacion();
     }
 
@@ -53,7 +53,7 @@ public class AppGUI {
 
         ventanaAutenticacion.setVisible(true);
     }
-
+    // Aqui si esta padre la implementacion, el problema es que App.java ya ni sirve :sob:
     // Método para autenticar al doctor usando los datos almacenados en App.java
     private void autenticarDoctor(String idDoctor, String codigoSeguridad, JFrame ventanaAutenticacion) {
         // Verificar si el doctor existe y la autenticación es correcta usando los datos predefinidos

@@ -7,8 +7,8 @@ import RegistroCitas.AppointmentBase;
 import RegistroCitas.AppointmentInterface;
 import RegistroCitas.DoctorInterface;
 import RegistroCitas.PatientInterface;
-import Tratamiento.SeguimientoTratamiento;
-import Emergencias.HistorialJustificante;
+// import Tratamiento.SeguimientoTratamiento;
+// import Emergencias.HistorialJustificante;
 import RegistroCitas.SignInterface;
 import User.UserBase;
 import User.Usuario;
@@ -58,16 +58,17 @@ public class MainMenu {
         JButton botonExpediente    = createButton("Expediente Médico");
         JButton botonTratamiento   = createButton("Seguimiento de Tratamiento");
         JButton botonJustificantes = createButton("Justificante Médico");
-        JButton botonCancelarCita  = createButton("Cancelar Cita");
+        // JButton botonCancelarCita  = createButton("Cancelar Cita"); (Cancelar cita ya viene adentro de AppointmentInterface)
+
+        // aqui quien sabe quien quito los actionlisteners >:(
 
         botonEmergencias.addActionListener(e -> new Emergency().setVisible(true));
-        // botonCitas...
-        botonHistorial  .addActionListener(e -> new InterfazPaciente());
-        // **Aquí** llamamos al constructor que recibe el doctor que está logueado:
-        botonExpediente.addActionListener(e -> new ExpedienteNuevo(this.Usuario));
-        // botonTratamiento...
-        // botonJustificantes...
-        // botonCancelarCita...
+        botonCitas.addActionListener(e -> new AppointmentInterface(this.Usuario));
+        botonHistorial.addActionListener(e -> new InterfazPaciente());
+        botonExpediente.addActionListener(null);
+        botonTratamiento.addActionListener(null);
+        botonJustificantes.addActionListener(null); // Estos 3 supuestamente lo hacian los que se dieron de baja
+
 
         buttonPanel.add(botonEmergencias);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -80,8 +81,9 @@ public class MainMenu {
         buttonPanel.add(botonTratamiento);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         buttonPanel.add(botonJustificantes);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        buttonPanel.add(botonCancelarCita);
+        // buttonPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        // buttonPanel.add(botonCancelarCita);
+        // y el GridBagLayout?? :(
 
         JPanel centerWrapper = new JPanel(new GridBagLayout());
         centerWrapper.add(buttonPanel);
