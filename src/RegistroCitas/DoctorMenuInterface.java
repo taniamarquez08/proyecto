@@ -11,10 +11,9 @@ public class DoctorMenuInterface {
     private JPanel buttonPanel;
     private JButton btnProgramarCita, btnVerExpediente, btnRegistrarConsulta, btnHistorialPrevio, btnVerSeguimiento;
     private AppointmentBase RegistroCitasGlobal;
-    public DoctorMenuInterface(AppointmentBase C_Global) {
-
-        
-        this.RegistroCitasGlobal = C_Global;
+    private Usuario Usuario;
+    public DoctorMenuInterface(Usuario U) {
+        this.Usuario = U;
 
         frame = new JFrame("Menú para el Doctor");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +34,7 @@ public class DoctorMenuInterface {
 
         // ActionListener para Programar Cita (ejemplo)
         btnProgramarCita.addActionListener(e -> 
-            new DoctorInterface(new Usuario("", "", "", "", "", "", "", "", "", "", RegistroCitasGlobal)) // Aqui si se acordaron ponerle el registro de citas pero hicieron un new AppointmentBase, entonces chiflo
+            new DoctorInterface(this.Usuario) // Aqui si se acordaron ponerle el registro de citas pero hicieron un new AppointmentBase, entonces chiflo
         );
 
         // ActionListener para Ver Expediente (desactivado hasta implementar)

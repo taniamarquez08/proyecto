@@ -141,7 +141,7 @@ frame.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     // Abrir el menú correspondiente
                     if (esDoctor) {
-                        new DoctorMenuInterface(registroCitasGlobal);
+                        new DoctorMenuInterface(usuario);
                     } else {
                         new MainMenu(usuario, registroCitasGlobal);
                     }
