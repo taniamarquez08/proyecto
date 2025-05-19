@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
+import Expediente.*;
+
 public class SignInterface {
     private JFrame frame;
     private JTextField emailField;
@@ -139,9 +141,9 @@ frame.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     // Abrir el menú correspondiente
                     if (esDoctor) {
-                        new DoctorMenuInterface();
+                        new DoctorMenuInterface(registroCitasGlobal);
                     } else {
-                        new MainMenu(usuario);
+                        new MainMenu(usuario, registroCitasGlobal);
                     }
 
                 } else {

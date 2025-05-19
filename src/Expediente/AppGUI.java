@@ -1,4 +1,4 @@
-//package Expediente;       QUITAR EL COMENTARIO -- Quitalo tu xd?
+package Expediente;
 
 import javax.swing.*;
 import java.awt.*;

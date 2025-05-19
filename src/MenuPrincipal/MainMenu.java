@@ -1,7 +1,9 @@
 package MenuPrincipal;
 
 import Emergencias.Emergency;
-import Expediente.ExpedienteNuevo;  // <-- Importamos la clase modificada
+import Expediente.AppGUI;
+import Expediente.ExpedienteNuevo;
+import Expediente.SistemaExpediente;
 import Historial.InterfazPaciente;
 import RegistroCitas.AppointmentBase;
 import RegistroCitas.AppointmentInterface;
@@ -29,10 +31,11 @@ public class MainMenu {
         return new SignInterface(BaseUsuario, BaseGlobalCitas, this);
     }
 
-    public MainMenu(Usuario U) {
+    public MainMenu(Usuario U, AppointmentBase CitasGlobales) {
         this.Usuario = U;
+
         BaseUsuario = new UserBase();
-        BaseGlobalCitas = new AppointmentBase();
+        this.BaseGlobalCitas = CitasGlobales;
 
         JFrame frame = new JFrame("MedConnect");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,11 +64,11 @@ public class MainMenu {
         // JButton botonCancelarCita  = createButton("Cancelar Cita"); (Cancelar cita ya viene adentro de AppointmentInterface)
 
         // aqui quien sabe quien quito los actionlisteners >:(
-
+        
         botonEmergencias.addActionListener(e -> new Emergency().setVisible(true));
-        botonCitas.addActionListener(e -> new AppointmentInterface(this.Usuario));
+        botonCitas.addActionListener(e -> new PatientInterface(this.Usuario,  new AppointmentInterface(this.Usuario)));
         botonHistorial.addActionListener(e -> new InterfazPaciente());
-        botonExpediente.addActionListener(null);
+        botonExpediente.addActionListener(e -> new AppGUI(null));
         botonTratamiento.addActionListener(null);
         botonJustificantes.addActionListener(null); // Estos 3 supuestamente lo hacian los que se dieron de baja
 

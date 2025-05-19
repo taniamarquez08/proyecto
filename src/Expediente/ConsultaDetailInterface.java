@@ -1,7 +1,5 @@
 package Expediente;
 
-package RegistroCitas;
-
 import User.Usuario;
 import Utilidades.ConexionSQLite;
 import javax.swing.*;

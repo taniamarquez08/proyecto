@@ -1,6 +1,6 @@
 package RegistroCitas;
 
-import Expediente.ExpedienteNuevo;      // IMPORT NUEVO
+import Expediente.*;      // IMPORT NUEVO
 import User.Usuario;
 import Emergencias.Emergency;
 import javax.swing.*;
@@ -10,8 +10,12 @@ public class DoctorMenuInterface {
     private JFrame frame;
     private JPanel buttonPanel;
     private JButton btnProgramarCita, btnVerExpediente, btnRegistrarConsulta, btnHistorialPrevio, btnVerSeguimiento;
+    private AppointmentBase RegistroCitasGlobal;
+    public DoctorMenuInterface(AppointmentBase C_Global) {
 
-    public DoctorMenuInterface() {
+        
+        this.RegistroCitasGlobal = C_Global;
+
         frame = new JFrame("Menú para el Doctor");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(400, 400);
@@ -31,7 +35,7 @@ public class DoctorMenuInterface {
 
         // ActionListener para Programar Cita (ejemplo)
         btnProgramarCita.addActionListener(e -> 
-            new DoctorInterface(new Usuario("", "", "", "", "", "", "", "", "", "", new AppointmentBase()))
+            new DoctorInterface(new Usuario("", "", "", "", "", "", "", "", "", "", RegistroCitasGlobal)) // Aqui si se acordaron ponerle el registro de citas pero hicieron un new AppointmentBase, entonces chiflo
         );
 
         // ActionListener para Ver Expediente (desactivado hasta implementar)
@@ -39,6 +43,8 @@ public class DoctorMenuInterface {
             new VerExpedienteInterface().setVisible(true)
         );
 */
+        // Este comentario estuvo cañon ^
+        // A cada rato se me cambia el teclado por lo que me tomo 3 minutos encontrar el ^
 
         // ActionListener modificado: al pulsar "Registrar Consulta" abre ExpedienteNuevo
         btnRegistrarConsulta.addActionListener(e -> {
@@ -74,9 +80,5 @@ public class DoctorMenuInterface {
         btn.setMaximumSize(new Dimension(300, 40));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         return btn;
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(DoctorMenuInterface::new);
     }
 }
